@@ -6,17 +6,15 @@
 #define CANSPEED_500	1		// CAN speed at 500 kbps
 #define ATH 5					// Throttle's Position in 0x773
 
-class CanbusClass
+class Canbus_bosch
 {
   public:
 
-	CanbusClass();
+	Canbus_bosch();
     char init(unsigned char);
-	char ecu_req(int pid,  uint8_t *value);
-private:
-	
+	int ecu_req(int pid,  int &value);
 };
-extern CanbusClass Canbus;
+extern Canbus_bosch Canbus;
 //extern tCAN message;
 
 #endif
