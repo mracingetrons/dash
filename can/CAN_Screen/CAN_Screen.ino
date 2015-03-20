@@ -27,13 +27,15 @@
 
 // For the Adafruit shield, these are the default.
 #define TFT_DC 9
-#define TFT_CS 10
+#define TFT_CS 6
 
 /*Reading BOSCH CAN2 line*/
 
 //Data will be temporarily stored to this char
+//CANBUS CS line for SPI
+int D6 = 6;
 
-unsigned long timeout = 500;
+unsigned long timeout = 100;
 int val;
 CANMSG message;
 
@@ -49,20 +51,6 @@ unsigned long ss = 0, ms = 0; // second, milliseccond
 
 void setup() 
 {
-  // disable screen SPI
-  
-  pinMode(6,OUTPUT);
-  digitalWrite(6,HIGH);
-
-  // disable SD SPI
-  pinMode(9,OUTPUT);
-  digitalWrite(9,HIGH);
-
-  // disable CANBUS SPI
-  pinMode(10,OUTPUT);
-  digitalWrite(10,HIGH);
-  
-  
   Serial.begin(9600);
   reftime = millis();
   Serial.println("ILI9341 Test!"); 
@@ -78,7 +66,7 @@ void setup()
   tft.setCursor(0, 0);
   tft.println("Bosch CAN Reader\n");
   
-  // Initialize MCP2515 CAN controller at the specified speed
+  //Initialize MCP2515 CAN controller at the specified speed
   if(MCP2515::initCAN(CAN_BAUD_500K)) 
   {
      tft.setTextSize(2);
@@ -136,7 +124,7 @@ void loop(void)
   // START JOHN'S STUFF
   //digitalWrite(LED, HIGH);  
   MCP2515::queryOBD(0x773);
-  // Grab ATH from Bosch CAN (note it is not a request)
+  //Grab ATH from Bosch CAN (note it is not a request)
   if( MCP2515::receiveCANMessage(&message, timeout) )
   {
     if(message.adrsValue == 0x773){
@@ -154,134 +142,4 @@ void loop(void)
  // END JOHN'S STUFF 
   //delay(1000);
 }
-
-/*unsigned long firstrect() 
-{
-  // first section with warnings
-  tft.fillScreen(ILI9341_BLACK);
-  tft.drawRect(0, 0, 105, 240, ILI9341_BLUE);
-  unsigned long start = micros();
-  tft.setCursor(6, 7);
-  tft.setTextColor(ILI9341_WHITE);
-  tft.setTextSize(2);
-  tft.println("WARNINGS"); // Warnings display
-  tft.drawLine(7, 22, 99, 22, ILI9341_WHITE);
-  
-  tft.setCursor(30, 70); // Oil temp warning
-  tft.setTextSize(1);
-  tft.setTextColor(ILI9341_YELLOW);
-  tft.println("OIL TEMP"); 
-
-  tft.setCursor(24, 120); // Water temp warning
-  tft.setTextSize(1);
-  tft.setTextColor(ILI9341_YELLOW);
-  tft.println("WATER TEMP"); 
-  
-  tft.setCursor(10, 170); // Water pressure
-  tft.setTextSize(1);
-  tft.setTextColor(ILI9341_YELLOW);
-  tft.println("WATER PRESSURE"); 
-  
-  return micros() - start;
-}
-
-unsigned long secondrect() 
-{
-  // second section with warnings
-  tft.drawRect(215, 0, 105, 240, ILI9341_BLUE);
-  unsigned long start = micros();
-  tft.setCursor(220, 7);
-  tft.setTextColor(ILI9341_WHITE);
-  tft.setTextSize(2);
-  tft.println("WARNINGS"); // Warnings display
-  tft.drawLine(221, 22, 313, 22, ILI9341_WHITE);
-  
-  tft.setCursor(245, 70); // Oil temp warning
-  tft.setTextSize(1);
-  tft.setTextColor(ILI9341_YELLOW);
-  tft.println("OIL TEMP"); 
-
-  tft.setCursor(239, 120); // Water temp warning
-  tft.setTextSize(1);
-  tft.setTextColor(ILI9341_YELLOW);
-  tft.println("WATER TEMP"); 
-  
-  tft.setCursor(225, 170); // Water pressure
-  tft.setTextSize(1);
-  tft.setTextColor(ILI9341_YELLOW);
-  tft.println("WATER PRESSURE"); 
-  
-  return micros() - start;
-}
-
-unsigned long thirdrect() 
-{
-  // gear section
-  tft.drawRect(106, 0, 108, 120, ILI9341_GREEN);
-  unsigned long start = micros();
-  return micros() - start;
-}
-
-unsigned long gear_change()
-{
-  for (int i = 0; i < 6; i++)
-  {
-    tft.setCursor(123, 7);
-    tft.setTextColor(ILI9341_GREEN);
-    tft.setTextSize(15);
-    tft.print(i);
-    //delay(3000);
-      
-    // blanking old gear
-    tft.setCursor(123, 7);
-    tft.setTextColor(ILI9341_BLACK);
-    tft.setTextSize(15);
-    tft.print(i);
-  }
-}
-
-unsigned long fourthrect()
-{
-  // lap section
-  tft.drawRect(106, 121, 108, 119, ILI9341_RED);
-  unsigned long start = micros();
-  return micros() - start;
-}
-*/
-  
-/*void check_time()
-{
-  if (ms > 9)
-  {
-    ms = 0;
-    ss++;
-  }
-  
-  else if (ss > 59)
-  {
-    ss = 0;
-    mm++;
-  }
-}*/
-  
-// find out if seconds has changed   
-  /*time = millis();
-  ms = (time - reftime)/1000;
-  if(ms == old_seconds) return ms;
-  
-  // printing new time
-  tft.setCursor(108, 200);
-  tft.setTextColor(ILI9341_RED);
-  tft.setTextSize(5);
-  tft.print(ms);
-  delay(1000);
-  
-  // blanking old time
-  tft.setCursor(108, 200);
-  tft.setTextColor(ILI9341_BLACK);
-  tft.setTextSize(4);
-  tft.print(ms);
-  old_seconds = ms;
-  */
-
 

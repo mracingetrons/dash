@@ -1,0 +1,7 @@
+All have 60 mA and we're supplying 12V
+
+Red - 2V, 630mcd -> 170 (60 mA), 1000 (10 mA) TARGET: 180
+Yellow - 2V, 1600mcd -> 170 (60 mA), 1000 (10 mA) TARGET: 390
+Orange - 2V, 780mcd -> 50 (60 mA), 300 (10 mA) TARGET: 180
+Green - 3.3V, 4700mcd -> 150 (60 mA), 870 (10 mA) TARGET: 866
+Blue - 3.3V, 1100mcd -> 150 (60 mA), 870 (10 mA) TARGET: 150

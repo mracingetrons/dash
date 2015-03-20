@@ -13,10 +13,10 @@
 
 */
 
-#include "C:\Program Files (x86)\Arduino\libraries\SPI\SPI.h"
+#include "SPI.h"
 #include "MCP2515.h"
 
-#define SLAVESELECT 9
+#define SLAVESELECT 6
 
 //MCP2515 Registers
 #define RXF0SIDH 0x00
